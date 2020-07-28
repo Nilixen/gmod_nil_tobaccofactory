@@ -1,0 +1,40 @@
+AddCSLuaFile("shared.lua")
+AddCSLuaFile("cl_init.lua")
+include("shared.lua")
+function ENT:Initialize()
+	self:SetModel("models/props_junk/cardboard_box004a.mdl")
+	self:PhysicsInit(SOLID_VPHYSICS)
+	self:SetMoveType(MOVETYPE_VPHYSICS )
+	self:SetSolid(SOLID_VPHYSICS)
+	self:SetColor(Color(225,255,180))
+
+	local phys = self:GetPhysicsObject()
+
+	if IsValid(phys) then
+		phys:Wake()
+		phys:SetMass(3)
+	end
+	self:SetHealth(50)
+	self:SetUseType(SIMPLE_USE)
+
+end
+
+function ENT:Use(ply)
+
+end
+
+function ENT:Touch(ent)
+	if ent:GetClass() != "ntf_drying_shelf" and ent:GetClass() != "ntf_crushing_table" then return end
+
+	ent:PlugIn(self)
+end
+
+
+function ENT:OnTakeDamage(dmg)
+	self:TakePhysicsDamage(dmg)
+
+	self:SetHealth(self:Health() - dmg:GetDamage())
+	if self:Health() <= 0 then
+		self:Remove()
+	end
+end
