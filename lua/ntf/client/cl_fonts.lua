@@ -8,3 +8,13 @@ surface.CreateFont( "ntf_small", {
   size = 80,
   weight = 10
 } )
+surface.CreateFont( "ntf_very_small", {
+	font = "Bahnschrift SemiLight",
+  size = 50,
+  weight = 10
+} )
+surface.CreateFont( "ntf_extreme_small", {
+	font = "Bahnschrift SemiLight",
+  size = 40,
+  weight = 10
+} )

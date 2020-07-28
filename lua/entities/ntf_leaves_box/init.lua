@@ -17,10 +17,15 @@ function ENT:Initialize()
 	self:SetHealth(50)
 	self:SetUseType(SIMPLE_USE)
 
+	if self:GetDoneTime() == 0 then
+		self:SetDoneTime(TobaccoFactory.Config.LeavesTime)
+	end
+
 end
 
 function ENT:Use(ply)
-
+	if self.parent == nil or self.parent:GetClass() != "ntf_drying_shelf" and self.parent:GetClass() != "ntf_crushing_table" then return end
+	self.parent:UnPlug(self)
 end
 
 function ENT:Touch(ent)

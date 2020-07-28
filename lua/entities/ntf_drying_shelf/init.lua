@@ -14,6 +14,8 @@ function ENT:Initialize()
 		phys:SetMass(150)
 	end
 	self:SetHealth(300)
+	self:SetAngles(self:GetAngles()+Angle(0,90,0))
+	self.nextTime = CurTime() + 1
 
 	self.filledSlots = {}
 
@@ -52,7 +54,16 @@ function ENT:Initialize()
 end
 
 function ENT:Think()
-
+	if self.nextTime <= CurTime() then
+		self.nextTime = CurTime()+1
+		for k,v in pairs(self.filledSlots) do
+			if v:GetClass() == "ntf_leaves_box" then
+				if v:GetDoneTime() > 0 then
+					v:SetDoneTime(v:GetDoneTime()-1)
+				end
+			end
+		end
+	end
 end
 
 function ENT:GetOpenSlots()
@@ -60,32 +71,62 @@ function ENT:GetOpenSlots()
 
 	local open = table.Count(self.slots)
 
-	for k, v in pairs(self.boxes) do
+	for k, v in pairs(self.filledSlots) do
 		if IsValid(v) then
 			open = open - 1
 		else
-			self.boxes[k] = nil
+			self.filledSlots[k] = nil
 		end
 	end
 	return open
 end
 
 function ENT:FirstAvaibleSlot()
-	for k,v in pairs(self.FilledSlots) do
-		if v == nil then return k end
+	for k,_ in pairs(self.slots) do
+		if self.filledSlots[k] == nil then return k end
 	end
 	return
+
 end
 
 function ENT:PlugIn(ent)
-	if !isValid(ent) then return end
-	if ent:GetClass() != "" then return end
+	if !IsValid(ent) then return end
+	if ent:GetClass() != "ntf_leaves_box" then return end
+	if self:GetOpenSlots() <= 0 then return end
 
-	
+	local num = self:FirstAvaibleSlot()
+
+
+	local pos = self.slots[num].pos
+	local ang = self.slots[num].ang
+
+	ent.parent = self
+	ent:SetPos(self:LocalToWorld(pos or Vector()))
+	ent:SetAngles(self:LocalToWorldAngles(ang or Angle()))
+	ent:SetParent(self)
+
+	self.filledSlots[num] = ent
+
 end
 
 function ENT:UnPlug(ent)
+	if ent:GetClass() != "ntf_leaves_box" then return end
 
+	for k, v in pairs(self.filledSlots) do
+		if not IsValid(v) then continue end
+		if v == ent then
+			self.filledSlots[k] = nil
+			ent.parent = nil
+			ent:SetParent()
+			print("----"..k)
+
+			local pos = (self.slots[k].pos + Vector(0, -35, 0) or self:GetPos()+Vector(0, -35, 0))
+			local ang = self.slots[k].ang
+
+			ent:SetPos(self:LocalToWorld(pos))
+
+		end
+	end
 end
 
 function ENT:OnTakeDamage(dmg)

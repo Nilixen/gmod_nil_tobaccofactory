@@ -1,7 +1,7 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 
-ENT.PrintName = "Leaves Box"
+ENT.PrintName = "Leaves pack"
 ENT.Spawnable = true
 ENT.Category = "Tobacco Factory"
 

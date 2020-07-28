@@ -17,8 +17,9 @@ function ENT:Initialize()
 	self:SetUseType(SIMPLE_USE)
 	self:SetPos(self:GetPos()+Vector(0,0,25))
 	self:SetHealth(150)
-
-	self:SetBoxes(TobaccoFactory.Config.Leaves)
+	if self:GetBoxes() == 0 then
+		self:SetBoxes(TobaccoFactory.Config.Leaves)
+	end
 end
 
 function ENT:Use(ply)

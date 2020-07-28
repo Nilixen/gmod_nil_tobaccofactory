@@ -1,3 +1,10 @@
 TobaccoFactory.Config.Lang.LeavesPack = "Tobacco Leaves"
 TobaccoFactory.Config.Lang.Unpack = "Unpack (E)"
 TobaccoFactory.Config.Lang.packsleft = "pack(s) left"
+
+TobaccoFactory.Config.Lang.LeavesBox = "Tobacco Leaves"
+TobaccoFactory.Config.Lang.placeindryer = "Place in dryer"
+TobaccoFactory.Config.Lang.wait = "Wait for"
+TobaccoFactory.Config.Lang.seconds = "seconds"
+TobaccoFactory.Config.Lang.takeout = "Take out"
+TobaccoFactory.Config.Lang.placeincrusher = "Place in crushing table"
