@@ -2,34 +2,36 @@ AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 function ENT:Initialize()
-	self:SetModel("models/props_junk/cardboard_box004a.mdl")
+	self:SetModel("models/props_lab/jar01b.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS )
 	self:SetSolid(SOLID_VPHYSICS)
-	self:SetColor(Color(225,255,180))
+	self:SetColor(Color(200,150,0))
 
 	local phys = self:GetPhysicsObject()
 
 	if IsValid(phys) then
 		phys:Wake()
-		phys:SetMass(3)
+		phys:SetMass(5)
 	end
 	self:SetHealth(50)
 	self:SetUseType(SIMPLE_USE)
 
-	if self:GetDoneTime() == 0 then
-		self:SetDoneTime(TobaccoFactory.Config.LeavesTime)
-	end
+	self:SetTobacco(TobaccoFactory.Config.TobaccoInJar)
 
 end
 
 function ENT:Use(ply)
-	if self.parent == nil or self.parent:GetClass() != "ntf_drying_shelf" then return end
+	if not ply:GetEyeTrace().Entity == self then return end
+	if self.parent == nil or self.parent:GetClass() != "ntf_packing_table" and self.parent:GetClass() != "ntf_crushing_table" then return end
+
 	self.parent:UnPlug(self)
+
 end
 
 function ENT:Touch(ent)
-	if ent:GetClass() != "ntf_drying_shelf" and ent:GetClass() != "ntf_crushing_table" then return end
+
+	if ent:GetClass() != "ntf_packing_table" then return end
 
 	ent:PlugIn(self)
 end

@@ -18,3 +18,8 @@ surface.CreateFont( "ntf_extreme_small", {
   size = 40,
   weight = 10
 } )
+surface.CreateFont( "ntf_vgui", {
+	font = "Bahnschrift SemiLight",
+  size = ScrH() * 0.015,
+  weight = 10
+} )

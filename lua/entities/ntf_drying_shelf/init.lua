@@ -92,6 +92,7 @@ end
 function ENT:PlugIn(ent)
 	if !IsValid(ent) then return end
 	if ent:GetClass() != "ntf_leaves_box" then return end
+	if ent:GetDoneTime() == 0 then return end
 	if self:GetOpenSlots() <= 0 then return end
 
 	local num = self:FirstAvaibleSlot()
@@ -118,13 +119,14 @@ function ENT:UnPlug(ent)
 			self.filledSlots[k] = nil
 			ent.parent = nil
 			ent:SetParent()
-			print("----"..k)
+
 
 			local pos = (self.slots[k].pos + Vector(0, -35, 0) or self:GetPos()+Vector(0, -35, 0))
 			local ang = self.slots[k].ang
 
 			ent:SetPos(self:LocalToWorld(pos))
-
+			local phys = ent:GetPhysicsObject()
+			phys:EnableMotion(true)
 		end
 	end
 end
