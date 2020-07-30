@@ -4,25 +4,44 @@ TobaccoFactory.Config.Language = "EN-en"
 
 TobaccoFactory.Config.Leaves = 3 // leaves inside leaves pack
 
-TobaccoFactory.Config.LeavesTime = 30 // in seconds, how long does the leaves need to be in drying shelf
+TobaccoFactory.Config.LeavesTime = 3 // in seconds, how long does the leaves need to be in drying shelf
 
 TobaccoFactory.Config.CrushingTableTaps = 10 // how many times does the player need to press E on the crushing table to make crushed leaves
 
-TobaccoFactory.Config.TobaccoInJar = 75 // how many grams are in 1 jar of tobacco
+TobaccoFactory.Config.TobaccoInJar = 250 // how many grams are in 1 jar of tobacco
 
-TobaccoFactory.Congif.ShopList = {
+TobaccoFactory.Config.ShopList = {
   {
     name = "Tobacco Leaves Pack",
     price = 250,
     model = "models/props_junk/cardboard_box001a.mdl",
-    color = Color(225,255,180),
-    time = 15 // in seconds
+    class = "ntf_leavespack",
+    time = 15, // in seconds MAX 255 seconds, due to 8 bits.
+    camPos = Vector(-50,0,20),
+    camAng = Angle(20,0,0),
+    description = "Contains 3x tobacco leaves boxes.",
+    fnc = function() end  // it goes off, when the entity is spawned
   },
   {
-    name = "Drying Shelf", //NOT COMPLETE
-    price = 250,
-    model = "models/props_junk/cardboard_box001a.mdl",
-    color = Color(225,255,180),
-    time = 15 // in seconds
+    name = "Drying Shelf",
+    price = 650,
+    model = "models/props_wasteland/kitchen_shelf001a.mdl",
+    class = "ntf_drying_shelf",
+    time = 15, // in seconds MAX 255 seconds, due to 8 bits.
+    camPos = Vector(-100, 0, 85),
+    camAng = Angle(20, 0, 0),
+    description = "Used in drying tobacco leaves.",
+    fnc = function() end // it goes off, when the entity is spawned
+  },
+  {
+    name = "Crushing Table",
+    price = 450,
+    model = "models/props/cs_militia/table_kitchen.mdl",
+    class = "ntf_crushing_table",
+    time = 15, // in seconds MAX 255 seconds, due to 8 bits.
+    camPos = Vector(-75, 0, 45),
+    camAng = Angle(20, 0, 0),
+    description = "Used in crushing tobacco leaves.",
+    fnc = function() end // it goes off, when the entity is spawned
   },
 }

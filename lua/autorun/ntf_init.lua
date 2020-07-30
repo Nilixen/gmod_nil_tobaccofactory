@@ -12,3 +12,8 @@ if SERVER then
     AddCSLuaFile("ntf/client/cl_fonts.lua")
     AddCSLuaFile("ntf/client/cl_gui_func.lua")
 end
+
+hook.Add("onPocketItemAdded","test",function(ply,ent,tab)
+  PrintTable(tab)
+
+end)

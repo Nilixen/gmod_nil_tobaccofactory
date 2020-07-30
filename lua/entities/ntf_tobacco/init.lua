@@ -16,8 +16,9 @@ function ENT:Initialize()
 	end
 	self:SetHealth(50)
 	self:SetUseType(SIMPLE_USE)
-
-	self:SetTobacco(TobaccoFactory.Config.TobaccoInJar)
+	if self:GetTobacco() == 0 then
+		self:SetTobacco(TobaccoFactory.Config.TobaccoInJar)
+	end
 
 end
 

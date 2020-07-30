@@ -25,4 +25,6 @@ TobaccoFactory.Config.Lang.Weight = "g" // g for grams :)
 
 // orderingPC
 
-TobaccoFactory.Config.Lang.OrderingPC = "Ordering Computer"
+TobaccoFactory.Config.Lang.DeliveryTime = "Delivery Time:"
+TobaccoFactory.Config.Lang.NoDelivery = "Nothing is being delivered!"
+TobaccoFactory.Config.Lang.DeliveryInProgress = "Delivery in progress!"

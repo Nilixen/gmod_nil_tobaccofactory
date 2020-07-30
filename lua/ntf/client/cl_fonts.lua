@@ -23,3 +23,13 @@ surface.CreateFont( "ntf_vgui", {
   size = ScrH() * 0.015,
   weight = 10
 } )
+surface.CreateFont( "ntf_vgui_shoplist", {
+	font = "Bahnschrift SemiLight",
+  size = ScrH() * 0.02,
+  weight = 10
+} )
+surface.CreateFont( "ntf_vgui_title", {
+	font = "Bahnschrift SemiLight",
+  size = ScrH() * 0.035,
+  weight = 10
+} )

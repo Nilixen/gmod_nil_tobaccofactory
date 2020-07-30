@@ -45,11 +45,6 @@ function ENT:Initialize()
 			ang = Angle(0, 181, 0)
 		},
 	}
-	self.radiator = nil
-	self.radiatorSlot = {
-		pos = Vector(0, 16, 35),
-		ang = Angle(0, 90, 0)
-	}
 
 end
 
@@ -58,7 +53,7 @@ function ENT:Think()
 		self.nextTime = CurTime()+1
 		for k,v in pairs(self.filledSlots) do
 			if v:GetClass() == "ntf_leaves_box" then
-				if v:GetDoneTime() > 0 then
+				if v:GetDoneTime() > 1 then
 					v:SetDoneTime(v:GetDoneTime()-1)
 				end
 			end

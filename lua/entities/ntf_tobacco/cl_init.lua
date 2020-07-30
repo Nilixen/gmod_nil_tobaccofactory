@@ -17,8 +17,9 @@ function ENT:Draw()
 //			draw.SimpleText(TobaccoFactory.Config.Lang.Tobacco,"ntf_extreme_small",0,-50,Color(255,255,255,DisColor),1,0)
 //			draw.SimpleText(self:GetTobacco()..TobaccoFactory.Config.Lang.Weight ,"ntf_extreme_small",0,10,Color(255,255,255,DisColor),1,0)
 				draw.RoundedBox(0,-90,-80,180,210,Color(30,30,30,DisColor))
-				TobaccoFactory:drawBoxCorners(-90,-80,180,210,DisColor)
+				TobaccoFactory:drawBoxCorners(-90,-80,180,210,20,3,1,DisColor)
 				draw.SimpleText(TobaccoFactory.Config.Lang.Tobacco,"ntf_extreme_small",0,-50,Color(255,255,255,DisColor),1,0)
+				draw.SimpleText(self:GetTobacco()..TobaccoFactory.Config.Lang.Weight,"ntf_extreme_small",0,-10,Color(255,255,255,DisColor),1,0)
 
 
 

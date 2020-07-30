@@ -6,6 +6,5 @@ ENT.Spawnable = true
 ENT.Category = "Tobacco Factory"
 
 function ENT:SetupDataTables()
-	self:NetworkVar( "Entity", 0, "Childs" )
-
+  self:NetworkVar( "String", 0, "filledSlots" )
 end

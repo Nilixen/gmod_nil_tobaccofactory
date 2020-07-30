@@ -15,7 +15,7 @@ function ENT:Initialize()
 
 	if IsValid(phys) then
 		phys:Wake()
-		phys:SetMass(50)
+		phys:SetMass(150)
 	end
 	self:SetUseType(SIMPLE_USE)
 	self:SetHealth(150)
