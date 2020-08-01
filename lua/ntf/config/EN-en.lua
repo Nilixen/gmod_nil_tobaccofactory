@@ -26,5 +26,10 @@ TobaccoFactory.Config.Lang.Weight = "g" // g for grams :)
 // orderingPC
 
 TobaccoFactory.Config.Lang.DeliveryTime = "Delivery Time:"
+TobaccoFactory.Config.Lang.CantUseThatPC = "You can't use things, you don't own!"
 TobaccoFactory.Config.Lang.NoDelivery = "Nothing is being delivered!"
 TobaccoFactory.Config.Lang.DeliveryInProgress = "Delivery in progress!"
+TobaccoFactory.Config.Lang.Order = "Order"
+TobaccoFactory.Config.Lang.CantOrder = "Insufficient funds!"
+TobaccoFactory.Config.Lang.Cancel = "Cancel"
+TobaccoFactory.Config.Lang.NoRefunds = "No Refunds"

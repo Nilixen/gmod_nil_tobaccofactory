@@ -87,7 +87,7 @@ end
 function ENT:PlugIn(ent)
 	if !IsValid(ent) then return end
 	if ent:GetClass() != "ntf_leaves_box" then return end
-	if ent:GetDoneTime() == 0 then return end
+	if ent:GetDoneTime() == 1 then return end
 	if self:GetOpenSlots() <= 0 then return end
 
 	local num = self:FirstAvaibleSlot()

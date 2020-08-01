@@ -1,5 +1,6 @@
 TobaccoFactory = {}
 TobaccoFactory.Config = TobaccoFactory.Config or {}
+TobaccoFactory.Client = TobaccoFactory.Client or {}
 TobaccoFactory.Config.Lang = TobaccoFactory.Config.Lang or {}
 
 if CLIENT then

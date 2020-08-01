@@ -20,6 +20,10 @@ function ENT:Initialize()
 	self.c_Mouse:Spawn()
 	self.c_Mouse:SetParent(self)
 
+	self.orderTime = 0
+	self.deliveryTime = 0
+
+	PrintTable(TobaccoFactory)
 
 	self.a = 0
 
@@ -62,7 +66,7 @@ end
 
 net.Receive("ntf_ordering_pc",function()
 	local ent = net.ReadEntity()
-	local deltime = net.ReadInt(8)
+	local orderTime = net.ReadInt(8)
 
 	local frame = vgui.Create("DFrame")
 	frame:SetSize(ScrW() * 0.6, ScrH() * 0.6)
@@ -76,22 +80,24 @@ net.Receive("ntf_ordering_pc",function()
 	end
 
 	local closeButton = vgui.Create("DButton",frame)
-	closeButton:SetSize(frame:GetWide()*0.035,frame:GetTall()*0.035)
-	closeButton:SetPos(frame:GetWide()-closeButton:GetWide(),0)
+	closeButton:SetSize(frame:GetWide()*0.040,frame:GetWide()*0.040)
+	closeButton:SetPos(frame:GetWide()-frame:GetWide()*0.040-4.5,0)
 	closeButton:SetText("")
 	closeButton:SetFont("ntf_vgui")
 	closeButton.DoClick = function()
 		frame:Remove()
 	end
 	closeButton.Paint = function(s, w, h)
-		draw.RoundedBox(0, 0, 0, w, h, Color(150, 0, 0, 150))
-		draw.SimpleText("X", "ntf_vgui", w / 2, h / 2, Color(255, 255, 255), 1, 1)
+		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
+		TobaccoFactory:drawBoxCorners(0,0,w,h,10,3,1)
+		draw.SimpleText("X", "ntf_vgui_shoplist", w / 2, h / 2, Color(255, 255, 255), 1, 1)
 	end
 
 	local selNum = 1
 
 	local scrollPanel = vgui.Create("DScrollPanel",frame)
 	scrollPanel:SetSize(frame:GetWide()* 0.3 ,frame:GetTall() * 0.9 )
+	scrollPanel:DockMargin(0,15,0,0)
 	scrollPanel:Dock(LEFT)
 	scrollPanel.Paint = function(s, w, h)
 		Blur( s, 255, 150, 255 )
@@ -109,10 +115,11 @@ net.Receive("ntf_ordering_pc",function()
 	list:SetSize(scrollPanel:GetWide(),scrollPanel:GetTall())
 	list:SetPos(0,0)
 
+
 	local selectionPanel = vgui.Create("DPanel",frame)
 	selectionPanel:SetSize(frame:GetWide() * 0.7 ,frame:GetTall() * 0.7)
+	selectionPanel:DockMargin(5,15,0,0)
 	selectionPanel:Dock(TOP)
-	selectionPanel:DockMargin(5,0,0,0)
 	selectionPanel.Paint = function( s, w, h )
 		Blur( s, 255, 150, 255 )
 		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
@@ -134,9 +141,10 @@ net.Receive("ntf_ordering_pc",function()
 	end
 
 	local orderProgress = vgui.Create( "DProgress" , orderPanel)
-	orderProgress:SetPos( 10, 10 )
+	orderProgress:Dock(LEFT)
+	orderProgress:DockMargin(10,10,5,10)
 	orderProgress:SetSize( orderPanel:GetWide() * 0.50 , orderPanel:GetTall()-20 )
-	orderProgress:SetFraction( 0.6 )
+	orderProgress:SetFraction( 0 )
 	orderProgress.Paint = function(s, w, h)
 		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
 		draw.RoundedBox(0, 0, 0, w*s:GetFraction(), h, Color(200, 200, 200, 150))
@@ -146,7 +154,59 @@ net.Receive("ntf_ordering_pc",function()
 			draw.SimpleText(TobaccoFactory.Config.Lang.DeliveryInProgress,"ntf_vgui_shoplist",w * 0.5,h * 0.5,Color(255,255,255),1,1)
 		end
 		TobaccoFactory:drawBoxCorners(0,0,w,h,10,2,1)
+		orderProgress:SetFraction( (CurTime()-ent.orderTime) /(ent.deliveryTime) )
+		if orderProgress:GetFraction() >= 1 then
+
+			ent.orderTime = 0
+			ent.deliveryTime = 0
+			orderProgress:SetFraction( 0 )
+		end
 	end
+
+
+	local orderCancelButton = vgui.Create("DButton",orderPanel)
+	orderCancelButton:Dock(FILL)
+	orderCancelButton:DockMargin(5,10,10,10)
+	orderCancelButton:SetText("")
+	orderCancelButton.Paint = function(s, w, h)
+		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
+		if orderProgress:GetFraction() == 0 and LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) then
+			draw.RoundedBox(0, 0, 0, w, h, Color(0, 75, 0, 150))
+			draw.SimpleText(TobaccoFactory.Config.Lang.Order,"ntf_vgui_title",w * 0.5,h * 0.5,Color(255,255,255),1,1)
+		elseif orderProgress:GetFraction() == 0 and !LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) then
+			draw.RoundedBox(0, 0, 0, w, h, Color(75, 0, 0, 150))
+			draw.SimpleText(TobaccoFactory.Config.Lang.CantOrder,"ntf_vgui_title",w * 0.5,h * 0.5,Color(255,255,255),1,1)
+		else
+			draw.RoundedBox(0, 0, 0, w, h, Color(75, 0, 0, 150))
+			draw.SimpleText(TobaccoFactory.Config.Lang.Cancel,"ntf_vgui_title",w * 0.5,h * 0.45,Color(255,255,255),1,1)
+			draw.SimpleText(TobaccoFactory.Config.Lang.NoRefunds,"ntf_vgui_shoplist",w * 0.5,h * 0.65,Color(255,255,255),1,1)
+		end
+		TobaccoFactory:drawBoxCorners(0,0,w,h,10,2,1)
+	end
+	orderCancelButton.DoClick = function()
+		if orderProgress:GetFraction() == 0 and LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) then
+			if orderTime == 0 then
+				orderTime = CurTime()
+			end
+			ent.deliveryTime = TobaccoFactory.Config.ShopList[selNum].time
+			ent.orderTime = orderTime
+
+			net.Start("ntf_ordering_pc")
+				net.WriteEntity(ent)
+				net.WriteInt(ent.orderTime,8)
+				net.WriteInt(selNum,8)
+			net.SendToServer()
+
+		elseif orderProgress:GetFraction() == 0 and !LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) then
+
+		else
+			ent.orderTime = 0
+			ent.deliveryTime = 0
+			orderProgress:SetFraction( 0 )
+		end
+	end
+
+
 
 	local iconPanel = vgui.Create("DPanel",selectionPanel)
 	iconPanel:SetSize(150, 150 )
