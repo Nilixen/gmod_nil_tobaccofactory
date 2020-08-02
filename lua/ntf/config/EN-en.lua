@@ -33,3 +33,5 @@ TobaccoFactory.Config.Lang.Order = "Order"
 TobaccoFactory.Config.Lang.CantOrder = "Insufficient funds!"
 TobaccoFactory.Config.Lang.Cancel = "Cancel"
 TobaccoFactory.Config.Lang.NoRefunds = "No Refunds"
+TobaccoFactory.Config.Lang.YouHaveReachedTheLimit = "You have reached the limit of:" // ec. Crushing Table :)
+TobaccoFactory.Config.Lang.ReachedLimit = "Reached Limit"

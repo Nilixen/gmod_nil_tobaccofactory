@@ -23,8 +23,6 @@ function ENT:Initialize()
 	self.orderTime = 0
 	self.deliveryTime = 0
 
-	PrintTable(TobaccoFactory)
-
 	self.a = 0
 
 end
@@ -46,7 +44,7 @@ function ENT:OnRemove()
 
 end
 local blur = Material( "pp/blurscreen" )
-function Blur( panel, layers, density, alpha )
+function TobaccoFactory:Blur( panel, layers, density, alpha )
 	-- Its a scientifically proven fact that blur improves a script
 	local x, y = panel:LocalToScreen(0, 0)
 
@@ -66,7 +64,8 @@ end
 
 net.Receive("ntf_ordering_pc",function()
 	local ent = net.ReadEntity()
-	local orderTime = net.ReadInt(8)
+	local limittable = net.ReadTable()
+	local orderTime
 
 	local frame = vgui.Create("DFrame")
 	frame:SetSize(ScrW() * 0.6, ScrH() * 0.6)
@@ -88,6 +87,7 @@ net.Receive("ntf_ordering_pc",function()
 		frame:Remove()
 	end
 	closeButton.Paint = function(s, w, h)
+		TobaccoFactory:Blur( s, 255, 150, 255 )
 		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
 		TobaccoFactory:drawBoxCorners(0,0,w,h,10,3,1)
 		draw.SimpleText("X", "ntf_vgui_shoplist", w / 2, h / 2, Color(255, 255, 255), 1, 1)
@@ -100,7 +100,7 @@ net.Receive("ntf_ordering_pc",function()
 	scrollPanel:DockMargin(0,15,0,0)
 	scrollPanel:Dock(LEFT)
 	scrollPanel.Paint = function(s, w, h)
-		Blur( s, 255, 150, 255 )
+		TobaccoFactory:Blur( s, 255, 150, 255 )
 		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
 		TobaccoFactory:drawBoxCorners(0,0,w,h,15,3,1)
 	end
@@ -121,7 +121,7 @@ net.Receive("ntf_ordering_pc",function()
 	selectionPanel:DockMargin(5,15,0,0)
 	selectionPanel:Dock(TOP)
 	selectionPanel.Paint = function( s, w, h )
-		Blur( s, 255, 150, 255 )
+		TobaccoFactory:Blur( s, 255, 150, 255 )
 		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
 		TobaccoFactory:drawBoxCorners(0,0,w,h,15,3,1)
 		draw.SimpleText(TobaccoFactory.Config.ShopList[selNum].name,"ntf_vgui_title",w * 0.6,h * 0.06,Color(255,255,255),1,1)
@@ -135,7 +135,7 @@ net.Receive("ntf_ordering_pc",function()
 	orderPanel:Dock(FILL)
 	orderPanel:DockMargin(5,5,0,0)
 	orderPanel.Paint = function( s, w, h )
-		Blur( s, 255, 150, 255 )
+		TobaccoFactory:Blur( s, 255, 150, 255 )
 		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
 		TobaccoFactory:drawBoxCorners(0,0,w,h,15,3,1)
 	end
@@ -154,59 +154,65 @@ net.Receive("ntf_ordering_pc",function()
 			draw.SimpleText(TobaccoFactory.Config.Lang.DeliveryInProgress,"ntf_vgui_shoplist",w * 0.5,h * 0.5,Color(255,255,255),1,1)
 		end
 		TobaccoFactory:drawBoxCorners(0,0,w,h,10,2,1)
-		orderProgress:SetFraction( (CurTime()-ent.orderTime) /(ent.deliveryTime) )
+		if ent.orderTime > 0 and ent.deliveryTime > 0 then
+			orderProgress:SetFraction( (CurTime()-ent.orderTime) /(ent.deliveryTime) )
+		end
 		if orderProgress:GetFraction() >= 1 then
-
 			ent.orderTime = 0
 			ent.deliveryTime = 0
 			orderProgress:SetFraction( 0 )
+			table.insert(limittable,TobaccoFactory.Config.ShopList[selNum].class)
 		end
 	end
-
 
 	local orderCancelButton = vgui.Create("DButton",orderPanel)
 	orderCancelButton:Dock(FILL)
 	orderCancelButton:DockMargin(5,10,10,10)
 	orderCancelButton:SetText("")
 	orderCancelButton.Paint = function(s, w, h)
+
 		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
-		if orderProgress:GetFraction() == 0 and LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) then
+		if orderProgress:GetFraction() > 0 then
+			draw.RoundedBox(0, 0, 0, w, h, Color(75, 0, 0, 150))
+			draw.SimpleText(TobaccoFactory.Config.Lang.Cancel,"ntf_vgui_title",w * 0.5,h * 0.45,Color(255,255,255),1,1)
+			draw.SimpleText(TobaccoFactory.Config.Lang.NoRefunds,"ntf_vgui_shoplist",w * 0.5,h * 0.65,Color(255,255,255),1,1)
+		elseif orderProgress:GetFraction() == 0 and TobaccoFactory:HasValueInt(limittable,TobaccoFactory.Config.ShopList[selNum].class) >= TobaccoFactory.Config.ShopList[selNum].limit then
+			draw.RoundedBox(0, 0, 0, w, h, Color(75, 0, 0, 150))
+			draw.SimpleText(TobaccoFactory.Config.Lang.ReachedLimit,"ntf_vgui_title",w * 0.5,h * 0.5,Color(255,255,255),1,1)
+		elseif orderProgress:GetFraction() == 0 and LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) then
 			draw.RoundedBox(0, 0, 0, w, h, Color(0, 75, 0, 150))
 			draw.SimpleText(TobaccoFactory.Config.Lang.Order,"ntf_vgui_title",w * 0.5,h * 0.5,Color(255,255,255),1,1)
 		elseif orderProgress:GetFraction() == 0 and !LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) then
 			draw.RoundedBox(0, 0, 0, w, h, Color(75, 0, 0, 150))
 			draw.SimpleText(TobaccoFactory.Config.Lang.CantOrder,"ntf_vgui_title",w * 0.5,h * 0.5,Color(255,255,255),1,1)
-		else
-			draw.RoundedBox(0, 0, 0, w, h, Color(75, 0, 0, 150))
-			draw.SimpleText(TobaccoFactory.Config.Lang.Cancel,"ntf_vgui_title",w * 0.5,h * 0.45,Color(255,255,255),1,1)
-			draw.SimpleText(TobaccoFactory.Config.Lang.NoRefunds,"ntf_vgui_shoplist",w * 0.5,h * 0.65,Color(255,255,255),1,1)
 		end
 		TobaccoFactory:drawBoxCorners(0,0,w,h,10,2,1)
 	end
 	orderCancelButton.DoClick = function()
-		if orderProgress:GetFraction() == 0 and LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) then
-			if orderTime == 0 then
-				orderTime = CurTime()
-			end
+		if orderProgress:GetFraction() == 0 and LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) and TobaccoFactory:HasValueInt(limittable,TobaccoFactory.Config.ShopList[selNum].class) < TobaccoFactory.Config.ShopList[selNum].limit then
+			orderTime = CurTime()
 			ent.deliveryTime = TobaccoFactory.Config.ShopList[selNum].time
 			ent.orderTime = orderTime
 
 			net.Start("ntf_ordering_pc")
+				net.WriteString("order")
 				net.WriteEntity(ent)
-				net.WriteInt(ent.orderTime,8)
 				net.WriteInt(selNum,8)
 			net.SendToServer()
 
 		elseif orderProgress:GetFraction() == 0 and !LocalPlayer():canAfford(TobaccoFactory.Config.ShopList[selNum].price) then
-
-		else
+		elseif orderProgress:GetFraction() > 0 then
 			ent.orderTime = 0
 			ent.deliveryTime = 0
+			print(ent.orderTime)
+			print(ent.deliveryTime)
 			orderProgress:SetFraction( 0 )
+			net.Start("ntf_ordering_pc")
+				net.WriteString("cancel")
+				net.WriteEntity(ent)
+			net.SendToServer()
 		end
 	end
-
-
 
 	local iconPanel = vgui.Create("DPanel",selectionPanel)
 	iconPanel:SetSize(150, 150 )

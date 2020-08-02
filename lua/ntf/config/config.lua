@@ -20,28 +20,31 @@ TobaccoFactory.Config.ShopList = {
     camPos = Vector(-50,0,20),
     camAng = Angle(20,0,0),
     description = "Contains 3x tobacco leaves boxes.",
-    fnc = function() end  // it goes off, when the entity is spawned
+    limit = 3,
+    fnc = function(self) end  // it goes off, when the entity is spawned
   },
   {
     name = "Drying Shelf",
     price = 650,
     model = "models/props_wasteland/kitchen_shelf001a.mdl",
     class = "ntf_drying_shelf",
-    time = 25, // in seconds MAX 255 seconds, due to 8 bits.
+    time = 3, // in seconds MAX 255 seconds, due to 8 bits.
     camPos = Vector(-100, 0, 85),
     camAng = Angle(20, 0, 0),
     description = "Used in drying tobacco leaves.",
-    fnc = function() end // it goes off, when the entity is spawned
+    limit = 1,
+    fnc = function(self) self:SetAngles(self:GetAngles()+Angle(0,90,0)) end // it goes off, when the entity is spawned
   },
   {
     name = "Crushing Table",
     price = 450,
     model = "models/props/cs_militia/table_kitchen.mdl",
     class = "ntf_crushing_table",
-    time = 30, // in seconds MAX 255 seconds, due to 8 bits.
+    time = 3, // in seconds MAX 255 seconds, due to 8 bits.
     camPos = Vector(-75, 0, 45),
     camAng = Angle(20, 0, 0),
     description = "Used in crushing tobacco leaves.",
-    fnc = function() end // it goes off, when the entity is spawned
+    limit = 1,
+    fnc = function(self) end // it goes off, when the entity is spawned
   },
 }
