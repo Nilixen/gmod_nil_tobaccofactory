@@ -10,6 +10,8 @@ TobaccoFactory.Config.CrushingTableTaps = 10 // how many times does the player n
 
 TobaccoFactory.Config.TobaccoInJar = 250 // how many grams are in 1 jar of tobacco
 
+TobaccoFactory.Config.CigaretteTubes = 150 // how many grams are in 1 jar of tobacco
+
 TobaccoFactory.Config.ShopList = {
   {
     name = "Tobacco Leaves Pack",
@@ -19,6 +21,7 @@ TobaccoFactory.Config.ShopList = {
     time = 5, // in seconds MAX 255 seconds, due to 8 bits.
     camPos = Vector(-50,0,20),
     camAng = Angle(20,0,0),
+    customColor = Color(255,255,255),
     description = "Contains 3x tobacco leaves boxes.",
     limit = 3,
     fnc = function(self) end  // it goes off, when the entity is spawned
@@ -31,6 +34,7 @@ TobaccoFactory.Config.ShopList = {
     time = 3, // in seconds MAX 255 seconds, due to 8 bits.
     camPos = Vector(-100, 0, 85),
     camAng = Angle(20, 0, 0),
+    customColor = Color(255,255,255),
     description = "Used in drying tobacco leaves.",
     limit = 1,
     fnc = function(self) self:SetAngles(self:GetAngles()+Angle(0,90,0)) end // it goes off, when the entity is spawned
@@ -43,8 +47,24 @@ TobaccoFactory.Config.ShopList = {
     time = 3, // in seconds MAX 255 seconds, due to 8 bits.
     camPos = Vector(-75, 0, 45),
     camAng = Angle(20, 0, 0),
+    customColor = Color(255,255,255),
     description = "Used in crushing tobacco leaves.",
     limit = 1,
     fnc = function(self) end // it goes off, when the entity is spawned
+  },
+  {
+    name = "Cigarette Tubes",
+    price = 150,
+    model = "models/props/cs_office/cardboard_box02.mdl",
+    class = "ntf_tubes",
+    time = 3, // in seconds MAX 255 seconds, due to 8 bits.
+    camPos = Vector(-20,0,10),
+    camAng = Angle(20, 0, 0),
+    customColor = Color(50,50,180),
+    description = "Used in packing table.",
+    limit = 2,
+    fnc = function(self)
+      self:Setamount(TobaccoFactory.Config.CigaretteTubes)
+    end // it goes off, when the entity is spawned
   },
 }

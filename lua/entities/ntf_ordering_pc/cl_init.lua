@@ -43,22 +43,6 @@ function ENT:OnRemove()
 		end
 
 end
-local blur = Material( "pp/blurscreen" )
-function TobaccoFactory:Blur( panel, layers, density, alpha )
-	-- Its a scientifically proven fact that blur improves a script
-	local x, y = panel:LocalToScreen(0, 0)
-
-	surface.SetDrawColor( 255, 255, 255, alpha )
-	surface.SetMaterial( blur )
-
-	for i = 1, 3 do
-		blur:SetFloat( "$blur", ( i / layers ) * density )
-		blur:Recompute()
-
-		render.UpdateScreenEffectTexture()
-		surface.DrawTexturedRect( -x, -y, ScrW(), ScrH() )
-	end
-end
 
 
 
@@ -90,7 +74,7 @@ net.Receive("ntf_ordering_pc",function()
 		TobaccoFactory:Blur( s, 255, 150, 255 )
 		draw.RoundedBox(0, 0, 0, w, h, Color(0, 0, 0, 150))
 		TobaccoFactory:drawBoxCorners(0,0,w,h,10,3,1)
-		draw.SimpleText("X", "ntf_vgui_shoplist", w / 2, h / 2, Color(255, 255, 255), 1, 1)
+		draw.SimpleText("X", "ntf_vgui_title", w / 2, h / 2, Color(255, 255, 255), 1, 1)
 	end
 
 	local selNum = 1
@@ -227,7 +211,7 @@ net.Receive("ntf_ordering_pc",function()
 	icon:SetModel(TobaccoFactory.Config.ShopList[selNum].model)
 	icon:SetCamPos(TobaccoFactory.Config.ShopList[selNum].camPos)
 	icon:SetLookAng(TobaccoFactory.Config.ShopList[selNum].camAng)
-
+	icon:SetColor(TobaccoFactory.Config.ShopList[selNum].customColor)
 
 
 
@@ -259,6 +243,7 @@ net.Receive("ntf_ordering_pc",function()
 			icon:SetModel(TobaccoFactory.Config.ShopList[selNum].model)
 			icon:SetCamPos(TobaccoFactory.Config.ShopList[selNum].camPos)
 			icon:SetLookAng(TobaccoFactory.Config.ShopList[selNum].camAng)
+			icon:SetColor(TobaccoFactory.Config.ShopList[selNum].customColor)
 		end
 
 	end

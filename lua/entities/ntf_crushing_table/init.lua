@@ -106,7 +106,6 @@ end
 
 function ENT:PlugIn(ent)
 	if ent:GetClass() != "ntf_leaves_box" then return end
-	if ent:GetDoneTime() > 1 then return end
 	if IsValid(self.filledSlots[1]) then
 		if self.filledSlots[1]:GetClass() == "ntf_tobacco" then return end
 	end
