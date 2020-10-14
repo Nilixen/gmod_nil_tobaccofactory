@@ -24,22 +24,22 @@ function ENT:Initialize()
 
 	self.slots = {
 		{
-		pos = Vector(9, -34, 35),
-		ang = Angle(0, 65, 0),
+		pos = Vector(8, -36, 35),
+		ang = Angle(0, 75, 0),
 		class = "ntf_tubes"
 		},
 		{
-		pos = Vector(-5, -21, 39),
+		pos = Vector(-5, -21, 40),
 		ang = Angle(0, 325, 0),
 		class = "ntf_tobacco"
 		},
 		{
-		pos = Vector(0, -24, 39),
-		ang = Angle(0, 330, 0),
+		pos = Vector(-9, -28, 35),
+		ang = Angle(0, 45, 0),
 		class = "ntf_filters"
 		},
 		{
-		pos = Vector(7, -14, 39),
+		pos = Vector(7, -14, 35),
 		ang = Angle(0, 330, 0),
 		class = "ntf_boxes"
 		},

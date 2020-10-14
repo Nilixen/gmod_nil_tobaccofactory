@@ -9,7 +9,8 @@ function ENT:Initialize()
 	self:SetMoveType(MOVETYPE_VPHYSICS )
 	self:SetSolid(SOLID_VPHYSICS)
 	self:SetUseType(SIMPLE_USE)
-	self:SetColor(Color(110,110,210))
+	self:SetColor(Color(110,210,110))
+
 	local phys = self:GetPhysicsObject()
 	if IsValid(phys) then
 		phys:Wake()
@@ -17,8 +18,9 @@ function ENT:Initialize()
 	end
 	self:SetHealth(50)
 	if self:Getamount() == 0 then
-		self:Setamount(TobaccoFactory.Config.CigaretteTubes)
+		self:Setamount(TobaccoFactory.Config.CigaretteBoxes)
 	end
+
 
 end
 

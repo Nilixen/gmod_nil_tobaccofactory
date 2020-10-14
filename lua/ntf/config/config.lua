@@ -10,7 +10,13 @@ TobaccoFactory.Config.CrushingTableTaps = 10 // how many times does the player n
 
 TobaccoFactory.Config.TobaccoInJar = 250 // how many grams are in 1 jar of tobacco
 
-TobaccoFactory.Config.CigaretteTubes = 150 // how many grams are in 1 jar of tobacco
+TobaccoFactory.Config.CigaretteTubes = 100
+
+TobaccoFactory.Config.CigaretteFilters = 150
+
+TobaccoFactory.Config.CigaretteBoxes = 60
+
+
 
 TobaccoFactory.Config.ShopList = {
   {
@@ -24,7 +30,7 @@ TobaccoFactory.Config.ShopList = {
     customColor = Color(255,255,255),
     description = "Contains 3x tobacco leaves boxes.",
     limit = 3,
-    fnc = function(self) end  // it goes off, when the entity is spawned
+    fnc = function(self,k) end  // it goes off, when the entity is spawned
   },
   {
     name = "Drying Shelf",
@@ -32,12 +38,12 @@ TobaccoFactory.Config.ShopList = {
     model = "models/props_wasteland/kitchen_shelf001a.mdl",
     class = "ntf_drying_shelf",
     time = 3, // in seconds MAX 255 seconds, due to 8 bits.
-    camPos = Vector(-100, 0, 85),
-    camAng = Angle(20, 0, 0),
+    camPos = Vector(0, 100, 85),
+    camAng = Angle(20, -90, 0),
     customColor = Color(255,255,255),
     description = "Used in drying tobacco leaves.",
     limit = 1,
-    fnc = function(self) self:SetAngles(self:GetAngles()+Angle(0,90,0)) end // it goes off, when the entity is spawned
+    fnc = function(self,k) self:SetAngles(self:GetAngles()+Angle(0,90,0)) end // it goes off, when the entity is spawned
   },
   {
     name = "Crushing Table",
@@ -50,7 +56,7 @@ TobaccoFactory.Config.ShopList = {
     customColor = Color(255,255,255),
     description = "Used in crushing tobacco leaves.",
     limit = 1,
-    fnc = function(self) end // it goes off, when the entity is spawned
+    fnc = function(self,k) end // it goes off, when the entity is spawned
   },
   {
     name = "Cigarette Tubes",
@@ -60,11 +66,35 @@ TobaccoFactory.Config.ShopList = {
     time = 3, // in seconds MAX 255 seconds, due to 8 bits.
     camPos = Vector(-20,0,10),
     camAng = Angle(20, 0, 0),
-    customColor = Color(50,50,180),
+    customColor = Color(110,110,210), // CUSTOM COLOR WORKS ONLY IN GUI, THIS WILL NOT SET THE COLOR OF ENTITY WHEN SPAWNED
     description = "Used in packing table.",
     limit = 2,
-    fnc = function(self)
-      self:Setamount(TobaccoFactory.Config.CigaretteTubes)
-    end // it goes off, when the entity is spawned
+    fnc = function(self,k) end // it goes off, when the entity is spawned
+  },
+  {
+    name = "Cigarette Filters",
+    price = 150,
+    model = "models/props/cs_office/cardboard_box02.mdl",
+    class = "ntf_filters",
+    time = 3, // in seconds MAX 255 seconds, due to 8 bits.
+    camPos = Vector(-20,0,10),
+    camAng = Angle(20, 0, 0),
+    customColor = Color(210,110,110), // CUSTOM COLOR WORKS ONLY IN GUI, THIS WILL NOT SET THE COLOR OF ENTITY WHEN SPAWNED
+    description = "Used in packing table.",
+    limit = 2,
+    fnc = function(self,k) end // it goes off, when the entity is spawned
+  },
+  {
+    name = "Cigarette Boxes",
+    price = 150,
+    model = "models/props/cs_office/cardboard_box02.mdl",
+    class = "ntf_boxes",
+    time = 3, // in seconds MAX 255 seconds, due to 8 bits.
+    camPos = Vector(-20,0,10),
+    camAng = Angle(20, 0, 0),
+    customColor = Color(110,210,110), // CUSTOM COLOR WORKS ONLY IN GUI, THIS WILL NOT SET THE COLOR OF ENTITY WHEN SPAWNED
+    description = "Used in packing table.",
+    limit = 2,
+    fnc = function(self,k) end // it goes off, when the entity is spawned
   },
 }

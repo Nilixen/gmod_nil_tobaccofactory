@@ -1,7 +1,7 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 
-ENT.PrintName = "Cigarette Tubes"
+ENT.PrintName = "Cigarette boxes"
 ENT.Spawnable = true
 ENT.Category = "Tobacco Factory"
 

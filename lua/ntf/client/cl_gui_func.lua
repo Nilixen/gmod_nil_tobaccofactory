@@ -38,3 +38,14 @@ function TobaccoFactory:Blur( panel, layers, density, alpha )
 		surface.DrawTexturedRect( -x, -y, ScrW(), ScrH() )
 	end
 end
+local color = 1
+hook.Add( "PreDrawHalos", "ntf_ordering_pc_halo", function()
+	local ents = ents.FindByClass( "ntf_ordering_pc" )
+	local p = {}
+	for k,v in pairs(ents) do
+		p[k] = ents[k].c_Box
+	end
+	frequency = 1
+	color = color + 1
+	halo.Add(	p, HSVToColor( color * frequency % 360, 1, 1 ), 5, 5, 2 )
+end )

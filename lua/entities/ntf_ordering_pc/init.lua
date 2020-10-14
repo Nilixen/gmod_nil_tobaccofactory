@@ -38,7 +38,7 @@ function ENT:Think()
 			entity:Spawn()
 			entity:SetPos(self:LocalToWorld(Vector(0,70,10)))
 			entity:SetAngles(self:GetAngles())
-			TobaccoFactory.Config.ShopList[self.selNum].fnc(entity)
+			TobaccoFactory.Config.ShopList[self.selNum].fnc(entity,self.selNum)
 			entity:CPPISetOwner(self.owner)
 			self.owner.ntfent[table.Count(self.owner.ntfent)+1] = entity
 			self.svlgc = 0

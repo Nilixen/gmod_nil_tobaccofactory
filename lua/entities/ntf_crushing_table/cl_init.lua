@@ -37,7 +37,8 @@ function ENT:Initialize()
 	}
 	self.posnum = math.random(1,table.Count(self.pos))
 	self.Taps = 0
-
+	self.tSlots = ""
+	self.filledSlots = {}
 end
 
 function ENT:Draw()
@@ -49,14 +50,18 @@ function ENT:Draw()
 	ang:RotateAroundAxis(self:GetAngles():Forward(),0)
 	ang:RotateAroundAxis(self:GetAngles():Up(),90)
 	ang:RotateAroundAxis(self:GetAngles():Right(),0)
-	local filledSlots = util.JSONToTable(self:GetfilledSlots()) or {}
+	if self.tSlots != self:GetfilledSlots() then
+		self.tSlots = self:GetfilledSlots()
+		self.filledSlots = util.JSONToTable(self:GetfilledSlots()) or {}
+
+	end
 
 		if self:GetPos():Distance( LocalPlayer():GetPos()) < 400 then
 			cam.Start3D2D(self:GetPos()+ang:Up()*35.3,ang,0.03)
 				draw.RoundedBox(0,-800 * 0.5, -800 * 0.5, 1400, 800,Color(30,30,30,DisColor))
 				TobaccoFactory:drawBoxCorners(-800 * 0.5, -800 * 0.5, 1400, 800,50,10,3,DisColor)
 				draw.SimpleText(TobaccoFactory.Config.Lang.CrushingTable,"ntf_big",300,-400,Color(255,255,255,DisColor),1,0)
-				if filledSlots[1] == "ntf_leaves_box" and filledSlots[2] == "ntf_leaves_box" and filledSlots[3] == "ntf_leaves_box" then
+				if self.filledSlots[1] == "ntf_leaves_box" and self.filledSlots[2] == "ntf_leaves_box" and self.filledSlots[3] == "ntf_leaves_box" then
 					draw.SimpleText(TobaccoFactory.Config.Lang.CrushLeaves,"ntf_small",300,-250,Color(255,255,255,DisColor),1,0)
 					if self.Taps < TobaccoFactory.Config.CrushingTableTaps then
 						draw.RoundedBox(0,self.pos[self.posnum].posx,self.pos[self.posnum].posy,120,120,Color(30,30,30,DisColor))
@@ -84,7 +89,7 @@ function ENT:Draw()
 						end
 					end
 
-				elseif filledSlots[1] == "ntf_tobacco" then
+				elseif self.filledSlots[1] == "ntf_tobacco" then
 					draw.SimpleText(TobaccoFactory.Config.Lang.TakeOutTobacco,"ntf_small",300,-250,Color(255,255,255,DisColor),1,0)
 				else
 					draw.SimpleText(TobaccoFactory.Config.Lang.WaitingForLeaves,"ntf_small",300,-250,Color(255,255,255,DisColor),1,0)

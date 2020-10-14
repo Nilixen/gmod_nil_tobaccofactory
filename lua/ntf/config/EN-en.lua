@@ -40,3 +40,9 @@ TobaccoFactory.Config.Lang.ReachedLimit = "Reached Limit"
 
 TobaccoFactory.Config.Lang.CigaretteTubes = "Cigarette Tubes"
 TobaccoFactory.Config.Lang.TubesLeft = "Tube(s) left"
+
+TobaccoFactory.Config.Lang.CigaretteFilters = "Cigarette Filters"
+TobaccoFactory.Config.Lang.FiltersLeft = "Filter(s) left"
+
+TobaccoFactory.Config.Lang.CigaretteBoxes = "Cigarette Boxes"
+TobaccoFactory.Config.Lang.BoxesLeft = "Box(es) left"

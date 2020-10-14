@@ -8,17 +8,27 @@ function ENT:Initialize()
 	self.c_Monitor:Spawn()
 	self.c_Monitor:SetParent(self)
 
+
+	self.c_Box = ents.CreateClientProp()
+	self.c_Box:SetModel( "models/squad/sf_plates/sf_plate6x8.mdl")
+	self.c_Box:SetPos(self:LocalToWorld(Vector(35,25,-1)))
+	self.c_Box:SetAngles( self:GetAngles()+ Angle(0,90,0))
+	self.c_Box:SetColor(Color(255,255,255,0))
+	self.c_Box:SetMaterial("Models/effects/vol_light001")
+	self.c_Box:SetParent(self)
+	self.c_Box:Spawn()
+
 	self.c_Keyboard = ClientsideModel( "models/props/cs_office/computer_keyboard.mdl")
 	self.c_Keyboard:SetPos(self:LocalToWorld(Vector(5,-3,31)))
 	self.c_Keyboard:SetAngles( self:GetAngles())
-	self.c_Keyboard:Spawn()
 	self.c_Keyboard:SetParent(self)
+	self.c_Keyboard:Spawn()
 
 	self.c_Mouse = ClientsideModel( "models/props/cs_office/computer_mouse.mdl")
 	self.c_Mouse:SetPos(self:LocalToWorld(Vector(5,14,31)))
 	self.c_Mouse:SetAngles( self:GetAngles())
-	self.c_Mouse:Spawn()
 	self.c_Mouse:SetParent(self)
+	self.c_Mouse:Spawn()
 
 	self.orderTime = 0
 	self.deliveryTime = 0
@@ -41,13 +51,14 @@ function ENT:OnRemove()
     if IsValid(self.c_Mouse ) then
 			self.c_Mouse:Remove()
 		end
-
+		if IsValid(self.c_Box ) then
+			self.c_Box:Remove()
+		end
 end
-
-
 
 net.Receive("ntf_ordering_pc",function()
 	local ent = net.ReadEntity()
+
 	local limittable = net.ReadTable()
 	local orderTime
 
